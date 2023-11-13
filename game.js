@@ -9,7 +9,7 @@ document.querySelector("#gameBox").appendChild(canvas);
 // Background image
 var bgReady = false;
 var bgImage = new Image();
-bgImage.src = "images/background.png";
+bgImage.src = "images/background.jpg";
 bgImage.onload = function () {
     bgReady = true; 
 };
@@ -17,7 +17,7 @@ bgImage.onload = function () {
 // Win frame image
 var winReady = false;
 var winImage = new Image(); 
-winImage.src = "images/win.png"; 
+winImage.src = "images/win.jpg"; 
 winImage.onload = function () {
     winReady = true; 
 };
@@ -41,14 +41,14 @@ goodyImage.onload = function () {
 // Create global game objects 
 var player = {
     speed: 5, // movement in pixels per tick 
-    width: 32,
-    height: 32
+    width: 100,
+    height: 100,
 };
 
 var goodies = [ // this is an array
-    { width: 32, height: 32 }, // one goody
-    { width: 32, height: 32 }, // two goodies
-    { width: 32, height: 32 }  // three goodies
+    { width: 100, height: 100 }, // one goody
+    { width: 100, height: 100 }, // two goodies
+    { width: 100, height: 100 }  // three goodies
 ];
 
 // Velocity variables
@@ -117,11 +117,45 @@ var init = function () {
     }
 };
 
-// the main game loop!
+// The main game loop
 var main = function () {
-    render();
-    window.requestAnimationFrame(main); 
+    if (checkWin()) {
+        //WIN display win frame
+        if (winReady) {
+            ctx.drawImage(winImage, (canvas.width - winImage.width)/2, 
+                (canvas.height - winImage.height)/2);
+        }
+    }
+    else {
+        //Not yet won, play game
+        //move player
+        if (player.x > 0 && player.x < canvas.width - player.width) {
+            player.x += vX;
+        }
+        else {
+            player.x -= vX;
+            vX = -vX; //bounce
+        }
+        if (player.y > 0 && player.y < canvas.height - player.height) {
+            player.y += vY
+        }
+        else {
+            player.y -= vY;
+            vY = -vY; //bounce
+        }
+        //check collisions
+        for (var i in goodies) {
+            if (checkCollision(player,goodies[i])) {
+                goodies.splice(i,1);
+            }
+        }
+
+        render();
+        window.requestAnimationFrame(main);
+    }
 };
+
+
 
 // Draw everything
 var render = function () {
@@ -134,6 +168,8 @@ var render = function () {
     }
     if (goodyReady) {
         for (var i in goodies) {
+            // ctx.drawImage creates objects in the canvas based on the rendered images and the created objects
+
             ctx.drawImage(goodyImage, goodies[i].x, goodies[i].y);
         }
     }
@@ -142,7 +178,29 @@ var render = function () {
     ctx.fillStyle = "rgb(250, 250, 250)";
 
     ctx.font = "50px serif";
-    ctx.fillText("Hello There", 50, 90, 140);
+
+    // change this fill text for debugging
+    ctx.fillText("Goodies left: "+goodies.length, 32, 32);
+};
+
+//Generic function to check for collisions 
+var checkCollision = function (obj1,obj2) {
+    if (obj1.x < (obj2.x + obj2.width) && 
+        (obj1.x + obj1.width) > obj2.x && 
+        obj1.y < (obj2.y + obj2.height) && 
+        (obj1.y + obj1.height) > obj2.y
+        ) {
+            return true;
+    }
+};
+
+//Check if we have won
+var checkWin = function () {
+    if (goodies.length > 0) { 
+        return false;
+    } else { 
+        return true;
+    }
 };
 
 init();
