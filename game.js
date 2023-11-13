@@ -25,7 +25,7 @@ winImage.onload = function () {
 // Player image
 var playerReady = false;
 var playerImage = new Image(); 
-playerImage.src = "images/player.png"; 
+playerImage.src = "images/Walkcycles.png"; 
 playerImage.onload = function () {
     playerReady = true; 
 };
@@ -33,7 +33,7 @@ playerImage.onload = function () {
 // Goodies image
 var goodyReady = false;
 var goodyImage = new Image(); 
-goodyImage.src = "images/goody.png"; 
+goodyImage.src = "images/racoon.png"; 
 goodyImage.onload = function () {
     goodyReady = true; 
 };
@@ -41,19 +41,21 @@ goodyImage.onload = function () {
 // Create global game objects 
 var player = {
     speed: 5, // movement in pixels per tick 
-    width: 100,
-    height: 100,
+    width: 50,
+    height: 50,
 };
 
 var goodies = [ // this is an array
-    { width: 100, height: 100 }, // one goody
-    { width: 100, height: 100 }, // two goodies
-    { width: 100, height: 100 }  // three goodies
+    { width: 50, height: 50 }, // one goody
+    { width: 50, height: 50 }, // two goodies
+    { width: 50, height: 50 }  // three goodies
 ];
 
 // Velocity variables
 var vX = 0;
 var vY = 0;
+
+let row = 0;
 
 // Handle keyboard controls
 addEventListener("keydown", function (e) {
@@ -61,18 +63,22 @@ addEventListener("keydown", function (e) {
     if (e.keyCode == 38) { // UP
         vX = 0;
         vY = -player.speed;
+        row=0;
     }
     if (e.keyCode == 40) { // DOWN
         vX = 0;
         vY = player.speed;
+        row=150;
     }
     if (e.keyCode == 37) { // LEFT
         vX = -player.speed;
         vY = 0;
+        row=100;
     }
     if (e.keyCode == 39) { // RIGHT
         vX = player.speed;
         vY = 0;
+        row=50;
     }
     if (e.keyCode == 32) { // STOP spacebar
         vX = 0;
@@ -164,7 +170,7 @@ var render = function () {
         ctx.fillRect(0,0,canvas.width,canvas.height);
     }
     if (playerReady) {
-        ctx.drawImage(playerImage, player.x, player.y);
+        ctx.drawImage(playerImage, 0, row, 50, 50, player.x, player.y, 100, 100);
     }
     if (goodyReady) {
         for (var i in goodies) {
