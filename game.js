@@ -57,9 +57,16 @@ var vY = 0;
 
 let row = 0;
 
+let gAnim;
+
 // Handle keyboard controls
 addEventListener("keydown", function (e) {
     //Keystrokes
+
+    if (!gAnim) {
+        gAnim = setInterval(anim,30);
+    }
+
     if (e.keyCode == 38) { // UP
         vX = 0;
         vY = -player.speed;
@@ -86,6 +93,14 @@ addEventListener("keydown", function (e) {
     }
 }, false);
 
+addEventListener("keyup", function (e) {
+        vX = 0;
+        vY = 0;
+        clearInterval(gAnim);
+        gAnim = null;
+        
+});
+
 // Handle touch controls
 addEventListener("touchstart", function (e) {
     if (e.target.id == "uArrow") { // UP
@@ -110,6 +125,17 @@ addEventListener("touchstart", function (e) {
     }
 });
 
+//ANIM spritesheet frames of goodies
+let gFrames = 10; //number of frames for goodies anim
+
+const anim = function () {
+	if (gFrames == 10) {
+		gFrames = 0;
+	}
+	gFrames++;
+};
+
+
 //Set initial state
 var init = function () {
     //Put the player in the centre
@@ -121,6 +147,8 @@ var init = function () {
         goodies[i].x = (Math.random() * (canvas.width - goodies[i].width  ));
         goodies[i].y = (Math.random() * (canvas.height - goodies[i].height));
     }
+
+   // gAnim = setInterval(anim,30);
 };
 
 // The main game loop
@@ -170,8 +198,11 @@ var render = function () {
         ctx.fillRect(0,0,canvas.width,canvas.height);
     }
     if (playerReady) {
-        ctx.drawImage(playerImage, 0, row, 50, 50, player.x, player.y, 100, 100);
-    }
+			//ANIM Paint current frame of goodie, see anim() function below for managing the loop across spritesheet
+			ctx.drawImage(playerImage, gFrames*player.width, row, 50, 50, player.x, player.y, 50, 50);
+	}
+    // ctx.drawImage(playerImage, 0, row, 50, 50, player.x, player.y, 100, 100);
+
     if (goodyReady) {
         for (var i in goodies) {
             // ctx.drawImage creates objects in the canvas based on the rendered images and the created objects
