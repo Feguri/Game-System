@@ -40,7 +40,7 @@ goodyImage.onload = function () {
 
 // Create global game objects 
 var player = {
-    speed: 5, // movement in pixels per tick 
+    speed: 10, // movement in pixels per tick 
     width: 50,
     height: 50,
 };
@@ -58,6 +58,11 @@ var vY = 0;
 let row = 0;
 
 let gAnim;
+
+var velocity = {
+    x: 0,
+    y: 0
+};
 
 // Handle keyboard controls
 addEventListener("keydown", function (e) {
@@ -97,9 +102,27 @@ addEventListener("keyup", function (e) {
         vX = 0;
         vY = 0;
         clearInterval(gAnim);
-        gAnim = null;
-        
+        gAnim = null;    
 });
+
+// addEventListener("keyup", function (e) {
+//     const myTimeout = setTimeout(check, 1000);
+    
+//     function check() {
+//          if (
+//         !(e.keyCode == 38 && vY == -player.speed) && 
+//         !(e.keyCode == 40 && vY == player.speed) &&  
+//         !(e.keyCode == 37 && vX == -player.speed) && 
+//         !(e.keyCode == 39 && vX == player.speed)     
+//     ) {
+//         vX = 0;
+//         vY = 0;
+//         clearInterval(gAnim);
+//         gAnim = null;
+//     }   
+//     }
+
+// });
 
 // Handle touch controls
 addEventListener("touchstart", function (e) {
