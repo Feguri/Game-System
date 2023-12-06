@@ -54,6 +54,8 @@ var goodies = [ // this is an array
 // Velocity variables
 var vX = 0;
 var vY = 0;
+// game variables
+let score = 0;
 
 let row = 0;
 
@@ -204,6 +206,7 @@ var main = function () {
         for (var i in goodies) {
             if (checkCollision(player,goodies[i])) {
                 goodies.splice(i,1);
+                score++;
             }
         }
 
@@ -240,7 +243,7 @@ var render = function () {
     ctx.font = "50px serif";
 
     // change this fill text for debugging
-    ctx.fillText("Goodies left: "+goodies.length, 32, 32);
+    ctx.fillText("Score: " + score, 32, 92);
 };
 
 //Generic function to check for collisions 
