@@ -30,6 +30,14 @@ playerImage.onload = function () {
     playerReady = true; 
 };
 
+// fruit basket
+var basketReady = false;
+var basketImage = new Image(); 
+basketImage.src = "images/basket.webp"; 
+basketImage.onload = function () {
+    basketReady = true; 
+};
+
 // Goodies images below
 
 var blueberryReady = false;
@@ -312,6 +320,10 @@ var render = function () {
             }
             
         }
+        
+    }
+    if (basketReady) {
+        ctx.drawImage(basketImage, 1000, 300, 300, 300);
     }
 
     //Label
