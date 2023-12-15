@@ -32,11 +32,47 @@ playerImage.onload = function () {
 
 // Goodies images below
 
-var goodyReady = false;
-var goodyImage = new Image(); 
-goodyImage.src = "images/racoon.png"; 
-goodyImage.onload = function () {
-    goodyReady = true; 
+var blueberryReady = false;
+var blueberryImage = new Image(); 
+blueberryImage.src = "images/Goodies/blueberry.png"; 
+blueberryImage.onload = function () {
+    blueberryReady = true; 
+};
+var carrotReady = false;
+var carrotImage = new Image(); 
+carrotImage.src = "images/Goodies/carrot.png"; 
+carrotImage.onload = function () {
+    carrotReady = true; 
+};
+var cherryReady = false;
+var cherryImage = new Image(); 
+cherryImage.src = "images/Goodies/cherry.png"; 
+cherryImage.onload = function () {
+    cherryReady = true; 
+};
+var greenAppleReady = false;
+var greenAppleImage = new Image(); 
+greenAppleImage.src = "images/Goodies/green-apple.png"; 
+greenAppleImage.onload = function () {
+    greenAppleReady = true; 
+};
+var rottenBlueberryReady = false;
+var rottenBlueberryImage = new Image(); 
+rottenBlueberryImage.src = "images/Goodies/rotten-blueberry.png"; 
+rottenBlueberryImage.onload = function () {
+    rottenBlueberryReady = true; 
+};
+var rottenCherryReady = false;
+var rottenCherryImage = new Image(); 
+rottenCherryImage.src = "images/Goodies/rotten-cherry.png"; 
+rottenCherryImage.onload = function () {
+    rottenCherryReady = true; 
+};
+var rottenGreenAppleReady = false;
+var rottenGreenAppleImage = new Image(); 
+rottenGreenAppleImage.src = "images/Goodies/rotten-green-apple.png"; 
+rottenGreenAppleImage.onload = function () {
+    rottenGreenAppleReady = true; 
 };
 
 // Create global game objects 
@@ -46,10 +82,14 @@ var player = {
     height: 100,
 };
 
-var goodies = [ // this is an array
-    { width: 50, height: 50 }, // one goody
-    { width: 50, height: 50 }, // two goodies
-    { width: 50, height: 50 }  // three goodies
+var goodies = [ 
+    { width: 50, height: 50, type: 'blueberry' }, 
+    { width: 50, height: 50, type: 'carrot' }, 
+    { width: 50, height: 50, type: 'cherry' },  
+    { width: 50, height: 50, type: 'green-apple' }, 
+    { width: 50, height: 50, type: 'rotten-blueberry' }, 
+    { width: 50, height: 50, type: 'rotten-cherry' },  
+    { width: 50, height: 50, type: 'rotten-green-apple' }, 
 ];
 
 // Velocity variables
@@ -59,6 +99,8 @@ var vY = 0;
 let score = 0;
 
 let row = 0;
+
+let fruitCaught;
 
 let gAnim;
 
@@ -249,11 +291,25 @@ var render = function () {
 	}
     // ctx.drawImage(playerImage, 0, row, 50, 50, player.x, player.y, 100, 100);
 
-    if (goodyReady) {
+    if (blueberryReady) {
         for (var i in goodies) {
             // ctx.drawImage creates objects in the canvas based on the rendered images and the created objects
-
-            ctx.drawImage(goodyImage, goodies[i].x, goodies[i].y);
+            if (goodies[i].type == 'blueberry') {
+                ctx.drawImage(blueberryImage, goodies[i].x, goodies[i].y);
+            } else if (goodies[i].type == 'carrot') {
+                ctx.drawImage(carrotImage, goodies[i].x, goodies[i].y);
+            } else if (goodies[i].type == 'cherry') {
+                ctx.drawImage(cherryImage, goodies[i].x, goodies[i].y);
+            } else if (goodies[i].type == 'green-apple') {
+                ctx.drawImage(greenAppleImage, goodies[i].x, goodies[i].y);
+            } else if (goodies[i].type == 'rotten-blueberry') {
+                ctx.drawImage(rottenBlueberryImage, goodies[i].x, goodies[i].y);
+            } else if (goodies[i].type == 'rotten-cherry') {
+                ctx.drawImage(rottenCherryImage, goodies[i].x, goodies[i].y);
+            } else if (goodies[i].type == 'rotten-green-apple') {
+                ctx.drawImage(rottenGreenAppleImage, goodies[i].x, goodies[i].y);
+            }
+            
         }
     }
 
@@ -264,6 +320,7 @@ var render = function () {
 
     // change this fill text for debugging
     ctx.fillText("Score: " + score, 32, 92); 
+    ctx.fillText("You just caught: " + fruitCaught, 132, 192);
 };
 
 //Generic function to check for collisions 
@@ -273,6 +330,8 @@ var checkCollision = function (obj1,obj2) {
         obj1.y < (obj2.y + obj2.height) && 
         (obj1.y + obj1.height) > obj2.y
         ) {
+            console.log('collision!', obj2.type);
+            fruitCaught = obj2.type;
             return true;
     }
 };
