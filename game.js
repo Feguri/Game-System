@@ -82,15 +82,35 @@ var player = {
     height: 100,
 };
 
+let numOfFruits = 10;
+
+let fruitsList = ['blueberry', 'carrot', 'cherry', 'green-apple', 'rotten-blueberry', 'rotten-cherry', 'rotten-green-apple'];
+function randomFruitGenerator() {
+    // Assign different probabilities for each fruit
+    const probabilities = [0.1, 0.05, 0.3, 0.3, 0.05, 0.05, 0.01];
+    
+    // Generate a random number to determine the fruit based on probabilities
+    const randomProbability = Math.random();
+    let cumulativeProbability = 0;
+
+    for (let i = 0; i < probabilities.length; i++) {
+        cumulativeProbability += probabilities[i];
+        if (randomProbability <= cumulativeProbability) {
+            // Return the selected fruit
+            return { width: 50, height: 50, type: fruitsList[i] };
+        }
+    }
+
+    // Default to blueberry if none of the probabilities match
+    return { width: 50, height: 50, type: 'blueberry' };
+}
 var goodies = [ 
     { width: 50, height: 50, type: 'blueberry' }, 
-    { width: 50, height: 50, type: 'carrot' }, 
-    { width: 50, height: 50, type: 'cherry' },  
-    { width: 50, height: 50, type: 'green-apple' }, 
-    { width: 50, height: 50, type: 'rotten-blueberry' }, 
-    { width: 50, height: 50, type: 'rotten-cherry' },  
-    { width: 50, height: 50, type: 'rotten-green-apple' }, 
 ];
+while (goodies.length < numOfFruits) {
+    goodies.push(randomFruitGenerator());
+}
+
 
 // Velocity variables
 var vX = 0;
@@ -161,25 +181,6 @@ addEventListener("keyup", function (e) {
         // change to default postition
         ctx.drawImage(playerImage, 400, row);
 });
-
-// addEventListener("keyup", function (e) {
-//     const myTimeout = setTimeout(check, 1000);
-    
-//     function check() {
-//          if (
-//         !(e.keyCode == 38 && vY == -player.speed) && 
-//         !(e.keyCode == 40 && vY == player.speed) &&  
-//         !(e.keyCode == 37 && vX == -player.speed) && 
-//         !(e.keyCode == 39 && vX == player.speed)     
-//     ) {
-//         vX = 0;
-//         vY = 0;
-//         clearInterval(gAnim);
-//         gAnim = null;
-//     }   
-//     }
-
-// });
 
 // Handle touch controls
 addEventListener("touchstart", function (e) {
@@ -330,6 +331,9 @@ var checkCollision = function (obj1,obj2) {
         obj1.y < (obj2.y + obj2.height) && 
         (obj1.y + obj1.height) > obj2.y
         ) {
+            if (obj2.type == 'carrot'){
+                player.speed += 3;
+            }
             console.log('collision!', obj2.type);
             fruitCaught = obj2.type;
             return true;
