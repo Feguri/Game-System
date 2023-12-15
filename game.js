@@ -9,7 +9,7 @@ document.querySelector("#gameBox").appendChild(canvas);
 // Background image
 var bgReady = false;
 var bgImage = new Image();
-bgImage.src = "images/background.jpg";
+bgImage.src = "images/background.png";
 bgImage.onload = function () {
     bgReady = true; 
 };
@@ -30,7 +30,8 @@ playerImage.onload = function () {
     playerReady = true; 
 };
 
-// Goodies image
+// Goodies images below
+
 var goodyReady = false;
 var goodyImage = new Image(); 
 goodyImage.src = "images/racoon.png"; 
@@ -262,8 +263,7 @@ var render = function () {
     ctx.font = "50px serif";
 
     // change this fill text for debugging
-    ctx.fillText("Score: " + score, 32, 92);
-    ctx.fillText("Position status:"  + pos, 132, 192);   
+    ctx.fillText("Score: " + score, 32, 92); 
 };
 
 //Generic function to check for collisions 
