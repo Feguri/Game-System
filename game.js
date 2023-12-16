@@ -1,8 +1,8 @@
 // Create the canvas
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
-canvas.width = document.documentElement.clientWidth;
-canvas.height = document.documentElement.clientHeight;
+canvas.width = document.querySelector("#gameBox").clientWidth;
+canvas.height = document.querySelector("#gameBox").clientHeight;
 document.querySelector("#gameBox").appendChild(canvas);
 
 //Load sprites
@@ -323,7 +323,7 @@ var render = function () {
         
     }
     if (basketReady) {
-        ctx.drawImage(basketImage, 1000, 300, 300, 300);
+        ctx.drawImage(basketImage, 100, 300, 100, 100);
     }
 
     //Label
