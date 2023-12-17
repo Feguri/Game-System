@@ -7,7 +7,7 @@ document.querySelector("#gameBox").appendChild(canvas);
 
 let dataBox = document.getElementById('data');
 let delivery = document.getElementById('delivery');
-
+let inventoryBox = document.getElementById('inventory');
 let inventory = [];
 
 //Load sprites
@@ -129,7 +129,7 @@ while (goodies.length < numOfFruits) {
     goodies.push(randomFruitGenerator());
 }
 
-
+let totalFruitsCaught = [];
 // Velocity variables
 var vX = 0;
 var vY = 0;
@@ -297,6 +297,12 @@ var main = function () {
 
 let basketDimension = 100;
 // Draw everything
+function addFruitImg(src){
+    let newInventoryItem = document.createElement('img');
+    newInventoryItem.className = 'inventory-img';
+    newInventoryItem.src = src;
+    inventoryBox.appendChild(newInventoryItem); 
+}
 var render = function () {
     if (bgReady) {
         ctx.fillStyle = ctx.createPattern(bgImage, 'repeat');
@@ -362,11 +368,20 @@ var checkCollision = function (obj1,obj2) {
             if (obj2.type == 'carrot'){
                 player.speed += 3;
             } else if (obj2.type == 'basket'){
-                
+                if(inventory.length >= 5){
+
+                    totalFruitsCaught = totalFruitsCaught.concat(inventory);
+                    inventory = [];
+                    console.log(totalFruitsCaught);
+                }
+               
+            } else {
+                fruitCaught = obj2.type;
+                inventory.push(fruitCaught);
+                addFruitImg(`images/Goodies/${fruitCaught}.png`);
+                console.log(inventory);
             }
-            fruitCaught = obj2.type;
-            inventory.push(fruitCaught);
-            console.log(inventory);
+
             return true;
     }
 };
