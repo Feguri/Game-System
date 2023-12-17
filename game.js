@@ -5,6 +5,8 @@ canvas.width = document.querySelector("#gameBox").clientWidth;
 canvas.height = document.querySelector("#gameBox").clientHeight;
 document.querySelector("#gameBox").appendChild(canvas);
 
+let dataBox = document.getElementById('data');
+
 //Load sprites
 // Background image
 var bgReady = false;
@@ -39,7 +41,6 @@ basketImage.onload = function () {
 };
 
 // Goodies images below
-
 var blueberryReady = false;
 var blueberryImage = new Image(); 
 blueberryImage.src = "images/Goodies/blueberry.png"; 
@@ -113,7 +114,7 @@ function randomFruitGenerator() {
     return { width: 50, height: 50, type: 'blueberry' };
 }
 var goodies = [ 
-    { width: 50, height: 50, type: 'blueberry' }, 
+     
 ];
 while (goodies.length < numOfFruits) {
     goodies.push(randomFruitGenerator());
@@ -280,7 +281,7 @@ var main = function () {
 };
 
 
-
+let basketDimension = 100;
 // Draw everything
 var render = function () {
     if (bgReady) {
@@ -323,7 +324,8 @@ var render = function () {
         
     }
     if (basketReady) {
-        ctx.drawImage(basketImage, 100, 300, 100, 100);
+        // puts the basket in the top center
+        ctx.drawImage(basketImage, canvas.width/2-basketDimension/2, 0, basketDimension, basketDimension);
     }
 
     //Label
@@ -333,7 +335,7 @@ var render = function () {
 
     // change this fill text for debugging
     ctx.fillText("Score: " + score, 32, 92); 
-    ctx.fillText("You just caught: " + fruitCaught, 132, 192);
+    dataBox.innerHTML = fruitCaught;
 };
 
 //Generic function to check for collisions 
