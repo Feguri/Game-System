@@ -37,8 +37,20 @@
 			.padding {
 				padding: 0 50px;
 			}
+			.center-ui {
+				display: flex;
+				justify-content: space-between;
+			}
 			.transparent {
 				opacity: 30%;
+			}
+			.container{
+				width: 15vw;
+				display: flex;
+				flex-direction: column;
+			}
+			.health-inventory {
+				display: block;
 			}
 		</style>
 	</head>
@@ -53,10 +65,17 @@
 		
 		<div class="center">
 			<div class="ui">
-				<div class="padding ui">
-					<p>User Interface</p>
-					<p id="data">data here</p>
-					<img src="images/deliver/deliverInactive.png" class="transparent" alt="Not deliver">
+				<div class="padding ui center-ui">
+					<div class="health-inventory container">
+						<p id="data">Health</p>
+						<p>inventory</p>
+					</div>
+					
+					<img id="delivery" src="images/deliver/deliverInactive.png" class="transparent" alt="Not deliver">
+					<div class="container">
+						<p>TIMER <span id="seconds">0</span>s</p>	
+					</div>
+					
 				</div>
 
 			</div>

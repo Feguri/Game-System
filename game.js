@@ -6,6 +6,9 @@ canvas.height = document.querySelector("#gameBox").clientHeight;
 document.querySelector("#gameBox").appendChild(canvas);
 
 let dataBox = document.getElementById('data');
+let delivery = document.getElementById('delivery');
+
+let inventory = [];
 
 //Load sprites
 // Background image
@@ -91,6 +94,12 @@ var player = {
     height: 100,
 };
 
+var basket = {
+    width: 100,
+    height: 100,
+    type: 'basket',
+}
+
 let numOfFruits = 10;
 
 let fruitsList = ['blueberry', 'carrot', 'cherry', 'green-apple', 'rotten-blueberry', 'rotten-cherry', 'rotten-green-apple'];
@@ -114,7 +123,7 @@ function randomFruitGenerator() {
     return { width: 50, height: 50, type: 'blueberry' };
 }
 var goodies = [ 
-     
+
 ];
 while (goodies.length < numOfFruits) {
     goodies.push(randomFruitGenerator());
@@ -238,7 +247,10 @@ var init = function () {
         goodies[i].y = (Math.random() * (canvas.height - goodies[i].height));
     }
 
-   // gAnim = setInterval(anim,30);
+    // Place the basket object at the top center, right below the 'deliver' sign
+    basket.x = canvas.width/2-basketDimension/2;
+    basket.y = 0;
+
 };
 
 // The main game loop
@@ -272,6 +284,8 @@ var main = function () {
             if (checkCollision(player,goodies[i])) {
                 goodies.splice(i,1);
                 score++;
+            } else if (checkCollision(player, basket)){
+
             }
         }
 
@@ -347,9 +361,12 @@ var checkCollision = function (obj1,obj2) {
         ) {
             if (obj2.type == 'carrot'){
                 player.speed += 3;
+            } else if (obj2.type == 'basket'){
+                
             }
-            console.log('collision!', obj2.type);
             fruitCaught = obj2.type;
+            inventory.push(fruitCaught);
+            console.log(inventory);
             return true;
     }
 };
