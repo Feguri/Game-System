@@ -288,6 +288,12 @@ var main = function () {
 
             }
         }
+        // respawn fruit
+        while (goodies.length < numOfFruits) {
+            goodies.push(randomFruitGenerator());
+            console.log(goodies);
+        }
+
 
         render();
         window.requestAnimationFrame(main);
@@ -358,6 +364,8 @@ var render = function () {
     dataBox.innerHTML = fruitCaught;
 };
 
+  
+let inventorySize = 3;
 //Generic function to check for collisions 
 var checkCollision = function (obj1,obj2) {
     if (obj1.x < (obj2.x + obj2.width) && 
@@ -368,18 +376,32 @@ var checkCollision = function (obj1,obj2) {
             if (obj2.type == 'carrot'){
                 player.speed += 3;
             } else if (obj2.type == 'basket'){
-                if(inventory.length >= 5){
-
+                if(inventory.length == inventorySize){
+                    
+                    // for some funching reason, it doesn't delete it all in one for loop
+                    while (inventoryBox.children.length > 0){
+                        for (let el of inventoryBox.children){
+                            el.remove();
+                        }
+                    }
+                    // Place goodies at random locations 
+                    for (var i in goodies) {
+                        goodies[i].x = (Math.random() * (canvas.width - goodies[i].width  ));
+                        goodies[i].y = (Math.random() * (canvas.height - goodies[i].height));
+                    }
                     totalFruitsCaught = totalFruitsCaught.concat(inventory);
                     inventory = [];
-                    console.log(totalFruitsCaught);
+                    
                 }
                
             } else {
+                // if you have a full inventory, it will not count as a collision
+                if (inventory.length == inventorySize){
+                    return false;
+                }
                 fruitCaught = obj2.type;
                 inventory.push(fruitCaught);
                 addFruitImg(`images/Goodies/${fruitCaught}.png`);
-                console.log(inventory);
             }
 
             return true;
