@@ -87,6 +87,34 @@ rottenGreenAppleImage.onload = function () {
     rottenGreenAppleReady = true; 
 };
 
+function startTimer(duration, display) {
+    let timer = duration, minutes, seconds;
+    setInterval(function () {
+      minutes = parseInt(timer / 60, 10);
+      seconds = parseInt(timer % 60, 10);
+
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+
+      display.textContent = minutes + ":" + seconds;
+
+      if (--timer < 0) {
+        displayWin();
+      }
+    }, 1000);
+  }
+  // Set the duration of the countdown in seconds
+  const countdownDuration = 3;
+
+  // Get the element where the timer will be displayed
+  const display = document.getElementById('timer');
+
+  // Start the countdown
+  startTimer(countdownDuration, display);
+
+  function displayWin() {
+    console.log(totalFruitsCaught);
+  }
 // Create global game objects 
 var player = {
     speed: 7, // movement in pixels per tick 
@@ -262,6 +290,7 @@ var main = function () {
                 (canvas.height - winImage.height)/2);
         }
     }
+    
     else {
         //Not yet won, play game
         //move player
@@ -365,7 +394,7 @@ var render = function () {
 };
 
   
-let inventorySize = 3;
+let inventorySize = 5;
 //Generic function to check for collisions 
 var checkCollision = function (obj1,obj2) {
     if (obj1.x < (obj2.x + obj2.width) && 
@@ -377,6 +406,8 @@ var checkCollision = function (obj1,obj2) {
                 player.speed += 3;
             } else if (obj2.type == 'basket'){
                 if(inventory.length == inventorySize){
+                    delivery.classList.remove('animation');
+                    delivery.classList.add('transparent');
                     
                     // for some funching reason, it doesn't delete it all in one for loop
                     while (inventoryBox.children.length > 0){
@@ -397,6 +428,8 @@ var checkCollision = function (obj1,obj2) {
             } else {
                 // if you have a full inventory, it will not count as a collision
                 if (inventory.length == inventorySize){
+                    delivery.classList.add('animation');
+                    delivery.classList.remove('transparent');
                     return false;
                 }
                 fruitCaught = obj2.type;

@@ -8,7 +8,7 @@
 		<style>
 			body { 
 				margin: 0px; overflow: hidden; 
-				background-color: rgb(11, 60, 7);
+				background-color: rgb(40, 22, 2);
 				color: white;
 			}
 			.arrow { position: absolute; background: none; width: 3em; height: 3em; }
@@ -56,37 +56,23 @@
 				width: 25px;
 				height: 25px;
 			}
-			@keyframes onOff {
-				0% {
-					.deliver {
-						background-image: url(images/deliver/deliverOn.png);
-					}
+
+			@keyframes toggleBackground {
+			0%, 100% {
+					background-image: url(images/deliver/deliverOn.png);
 				}
 				50% {
-					.deliver {
-						background-image: url(images/deliver/deliverOff.png);
-					}
+					background-image: url(images/deliver/deliverOff.png);
 				}
-				100% {
-					.deliver {
-						background-image: url(images/deliver/deliverOn.png);
-					}
 				}
-			}
 			.deliver {
 				background-image: url(images/deliver/deliverInactive.png);
 				width: 110px;
 				height: 110px;
 			}
-			.on {
-				background-image: url(images/deliver/deliverOn.png);
-				width: 110px;
-				height: 110px;
-			}
-			.off {
-				background-image: url(images/deliver/deliverOff.png);
-				width: 110px;
-				height: 110px;
+			.animation {
+				animation: toggleBackground 1s infinite;
+				
 			}
 		</style>
 	</head>
@@ -110,7 +96,7 @@
 					<div id="delivery" class="transparent deliver"></div>
 					
 					<div class="container">
-						<p>TIMER <span id="seconds">0</span>s</p>	
+						<p>TIMER <span id="timer">60</span>s</p>	
 					</div>
 					
 				</div>
