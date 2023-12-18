@@ -5,18 +5,37 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Lucky the Rabbit</title>
 		<script src="game.js" defer></script>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Erica+One&family=Preahvihear&display=swap" rel="stylesheet"> 
 		<style>
 			body { 
-				margin: 0px; overflow: hidden; 
-				background-color: rgb(40, 22, 2);
-				color: white;
+				margin: 0px; overflow: hidden;	
+				color: #502311;
+				background-color: #42692F;
+				font-family: 'Preahvihear', sans-serif;
+			}
+			.blur {
+				filter: blur(4px);
 			}
 			.arrow { position: absolute; background: none; width: 3em; height: 3em; }
 			#uArrow { top:0px; width: 100%; }
 			#dArrow { bottom:0px; width: 100%; }
 			#lArrow { left:0px; height: 100%; }
 			#rArrow { right:0px; height: 100%; }
-
+			p span {
+				font-family: 'Erica One', sans-serif;
+				font-size: 40px;
+			}
+			p {
+				font-family: 'Erica One', sans-serif;
+				font-size: 23px;
+			}
+			h2 {
+				font-size: 40px;
+				font-family: 'Preahvihear', sans-serif;
+				text-align: center;
+			}
 			.center {
 				display: flex;
 				justify-content: center;
@@ -32,7 +51,28 @@
 			.ui {
 				display: flex;
 				width: 100%;
-				gap: 50px;	
+				gap: 50px;
+			}
+			.border-bg{
+				background-color: #F5D99E;	
+				border: 7px solid #502311;
+				border-radius: 30px;
+			}
+			button {
+				background-color: #502311;
+				border-radius: 30px;
+				font-size: 30px;
+				font-family: 'Erica One', sans-serif;
+				color: white;
+				padding: 15px;
+				border: none;
+				border: 7px solid #F5D99E;
+			}
+			button:hover {
+				cursor: pointer;
+				background-color: #F5D99E;
+				color: #502311;
+				border: 7px solid #502311;
 			}
 			.padding {
 				padding: 0 50px;
@@ -56,6 +96,10 @@
 				width: 25px;
 				height: 25px;
 			}
+			.score-img {
+				width: 50px;
+				height: 50px;
+			}
 
 			@keyframes toggleBackground {
 			0%, 100% {
@@ -67,16 +111,41 @@
 				}
 			.deliver {
 				background-image: url(images/deliver/deliverInactive.png);
-				width: 110px;
-				height: 110px;
+				width: 118px;
+  				height: 108px;
 			}
 			.animation {
 				animation: toggleBackground 1s infinite;
 				
 			}
+			.final-score {
+				position: absolute;
+				width: 50vw;
+				height: 75vh;
+			}
+			.final-score-container {
+				position: absolute;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: 100%;
+				height: 100vh;
+				bottom: 10px;
+			}
+			.fruit-count {
+				display: flex;
+				align-items: center;
+				justify-content: space-around;
+				width: 50%;
+			}
+			.center-fruits {
+				display: flex;
+				justify-content: center;
+				width: 100%;
+			}
 		</style>
 	</head>
-	<body>
+	<body class="">
 		
 		<nav>
 			<div id="uArrow" class="arrow"></div>
@@ -87,7 +156,7 @@
 		
 		<div class="center">
 			<div class="ui">
-				<div class="padding ui center-ui">
+				<div class="padding ui border-bg center-ui">
 					<div class="health-inventory container">
 						<p id="data">Health</p>
 						<div class="inventory" id="inventory"></div>
@@ -96,7 +165,7 @@
 					<div id="delivery" class="transparent deliver"></div>
 					
 					<div class="container">
-						<p>TIMER <span id="timer">60</span>s</p>	
+						<p><span id="timer">60</span>s</p>	
 					</div>
 					
 				</div>
@@ -104,7 +173,61 @@
 			</div>
 			
 			<div id="gameBox">
-			
+				<div class="final-score-container">
+					<div class="final-score border-bg">
+						<h2>Time's Up!</h2>
+						<div class="fruits-container">
+							<div class="center-fruits">
+								<div class="fruit-count">
+									<img src="images/Goodies/blueberry.png" class="score-img" alt="">
+								x <span id="blueberry-caught">45</span>=<span id="blueberry-calculated-score">500 points</span>
+								</div>
+								
+							</div>
+							<div class="center-fruits">
+								<div class="fruit-count">
+									<img src="images/Goodies/cherry.png" class="score-img" alt="">
+								x <span id="cherry-caught">45</span>=<span id="cherry-calculated-score">500 points</span>
+								</div>
+								
+							</div>
+							<div class="center-fruits">
+								<div class="fruit-count">
+									<img src="images/Goodies/green-apple.png" class="score-img" alt="">
+								x <span id="green-apple-caught">45</span>=<span id="green-apple-calculated-score">500 points</span>
+								</div>
+								
+							</div>
+							<div class="center-fruits">
+								<div class="fruit-count">
+									<img src="images/Goodies/rotten-blueberry.png" class="score-img" alt="">
+								x <span id="rotten-blueberry-caught">45</span>=<span id="rotten-blueberry-calculated-score">500 points</span>
+								</div>
+								
+							</div>
+							<div class="center-fruits">
+								<div class="fruit-count">
+									<img src="images/Goodies/rotten-cherry.png" class="score-img" alt="">
+								x <span id="rotten-cherry-caught">45</span>=<span id="rotten-cherry-calculated-score">500 points</span>
+								</div>
+								
+							</div>
+							<div class="center-fruits">
+								<div class="fruit-count">
+									<img src="images/Goodies/rotten-green-apple.png" class="score-img" alt="">
+								x <span id="rotten-green-apple-caught">45</span>=<span id="rotten-green-apple-calculated-score">500 points</span>
+								</div>
+								
+							</div>
+							<h2>Final Score: <span id="final-score">5000</span></h2>
+							<div class="center-fruits">
+								<button type="button">RESTART</button>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+
 			</div>	
 		</div>
 

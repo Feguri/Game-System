@@ -38,7 +38,7 @@ playerImage.onload = function () {
 // fruit basket
 var basketReady = false;
 var basketImage = new Image(); 
-basketImage.src = "images/basket.webp"; 
+basketImage.src = "images/basket.png"; 
 basketImage.onload = function () {
     basketReady = true; 
 };
@@ -87,9 +87,10 @@ rottenGreenAppleImage.onload = function () {
     rottenGreenAppleReady = true; 
 };
 
-function startTimer(duration, display) {
+  // Function to start the countdown
+  function startTimer(duration, display) {
     let timer = duration, minutes, seconds;
-    setInterval(function () {
+    const intervalId = setInterval(function () {
       minutes = parseInt(timer / 60, 10);
       seconds = parseInt(timer % 60, 10);
 
@@ -99,12 +100,15 @@ function startTimer(duration, display) {
       display.textContent = minutes + ":" + seconds;
 
       if (--timer < 0) {
+        clearInterval(intervalId); // Clear the interval when timer reaches 0
+        timer = duration;
         displayWin();
       }
     }, 1000);
   }
+
   // Set the duration of the countdown in seconds
-  const countdownDuration = 3;
+  const countdownDuration = 10;
 
   // Get the element where the timer will be displayed
   const display = document.getElementById('timer');
@@ -387,9 +391,7 @@ var render = function () {
     ctx.fillStyle = "rgb(250, 250, 250)";
 
     ctx.font = "50px serif";
-
-    // change this fill text for debugging
-    ctx.fillText("Score: " + score, 32, 92); 
+    // ctx.filltext here
     dataBox.innerHTML = fruitCaught;
 };
 
@@ -428,9 +430,11 @@ var checkCollision = function (obj1,obj2) {
             } else {
                 // if you have a full inventory, it will not count as a collision
                 if (inventory.length == inventorySize){
+                    return false;
+                }
+                if (inventory.length == inventorySize-1){
                     delivery.classList.add('animation');
                     delivery.classList.remove('transparent');
-                    return false;
                 }
                 fruitCaught = obj2.type;
                 inventory.push(fruitCaught);
