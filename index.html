@@ -95,9 +95,16 @@
 			.health-inventory {
 				display: block;
 			}
+			.inventory {
+				height: 25px;
+			}
 			.inventory-img {
 				width: 25px;
 				height: 25px;
+			}
+			.inventory-img-big {
+				width: 35px;
+				height: 35px;
 			}
 			.score-img {
 				width: 50px;
@@ -147,6 +154,22 @@
 				justify-content: center;
 				width: 100%;
 			}
+			.health-inventory-container {
+				display: flex;
+				align-items: center;
+				background-color:#5023114a;
+				width: 20vw;
+			}
+			.expression-container {
+				height: 100px;
+				background-color: #BDE5F6;
+				border: 2px solid #502311;
+				
+			}
+			.expression-container img {
+				width: 100%;
+				height: 100%;
+			}
 		</style>
 	</head>
 	<body>
@@ -161,10 +184,24 @@
 		<div class="center">
 			<div class="ui">
 				<div class="padding ui border-bg center-ui">
-					<div class="health-inventory container">
-						<p id="data">Health</p>
-						<div class="inventory" id="inventory"></div>
-					</div>
+					<div class="health-inventory-container">
+
+							<div class="expression-container">
+								<img src="images/luckyExpressions/normalLucky.png" alt="">
+							</div>
+							<div class="health-and-inventory-container">
+								<div class="health">
+
+									<img src="images/luckyMiniface.png" alt="" class="inventory-img-big">
+									<img src="images/luckyHeart.png" class="inventory-img" alt="heart">
+									<img src="images/luckyHeart.png" class="inventory-img" alt="heart">
+									<img src="images/luckyHeart.png" class="inventory-img" alt="heart">
+								</div>
+								<div class="inventory" id="inventory">
+										
+								</div>
+							</div>
+						</div>
 					
 					<div id="delivery" class="transparent deliver"></div>
 					

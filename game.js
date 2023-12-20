@@ -5,7 +5,7 @@ canvas.width = document.querySelector("#gameBox").clientWidth;
 canvas.height = document.querySelector("#gameBox").clientHeight;
 document.querySelector("#gameBox").appendChild(canvas);
 
-let dataBox = document.getElementById('data');
+// let dataBox = document.getElementById('data');
 let delivery = document.getElementById('delivery');
 let inventoryBox = document.getElementById('inventory');
 let inventory = [];
@@ -437,7 +437,7 @@ var render = function () {
 
     ctx.font = "50px serif";
     // ctx.filltext here
-    dataBox.innerHTML = fruitCaught;
+    // dataBox.innerHTML = fruitCaught;
 };
 
   
