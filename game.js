@@ -10,6 +10,8 @@ let delivery = document.getElementById('delivery');
 let inventoryBox = document.getElementById('inventory');
 let inventory = [];
 
+let playerLost = false;
+
 //Load sprites
 // Background image
 var bgReady = false;
@@ -19,12 +21,12 @@ bgImage.onload = function () {
     bgReady = true; 
 };
 
-// Win frame image
-var winReady = false;
-var winImage = new Image(); 
-winImage.src = "images/win.jpg"; 
-winImage.onload = function () {
-    winReady = true; 
+// lose image
+var loseReady = false;
+var loseImage = new Image(); 
+loseImage.src = "images/win.jpg"; 
+loseImage.onload = function () {
+    loseReady = true; 
 };
 
 // Player image
@@ -517,8 +519,12 @@ let playerVisible = true;
 function hitCharacter() {
   if (!gracePeriod) {
     // Character is hit, perform hit logic
-    player.speed -= 3;
+    player.speed -= 2;
     livesLeft--;
+    if (livesLeft === -1){
+        playerLost = true;
+        window.location.replace("game-over.html");
+    }
     document.querySelectorAll('.heart')[0].remove();
     document.getElementById('expression').src = 'images/luckyExpressions/sadLucky.png';
     document.getElementById('expression-container').style.backgroundColor = '#40425A';
