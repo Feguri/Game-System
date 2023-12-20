@@ -18,6 +18,9 @@
 			.blur {
 				filter: blur(4px);
 			}
+			.not-blur {
+				filter: blur(0px);
+			}
 			.arrow { position: absolute; background: none; width: 3em; height: 3em; }
 			#uArrow { top:0px; width: 100%; }
 			#dArrow { bottom:0px; width: 100%; }
@@ -85,7 +88,7 @@
 				opacity: 30%;
 			}
 			.container{
-				width: 15vw;
+				width: 20vw;
 				display: flex;
 				flex-direction: column;
 			}
@@ -122,6 +125,7 @@
 				position: absolute;
 				width: 50vw;
 				height: 75vh;
+				display: none;
 			}
 			.final-score-container {
 				position: absolute;
@@ -145,7 +149,7 @@
 			}
 		</style>
 	</head>
-	<body class="">
+	<body>
 		
 		<nav>
 			<div id="uArrow" class="arrow"></div>
@@ -173,55 +177,55 @@
 			</div>
 			
 			<div id="gameBox">
-				<div class="final-score-container">
-					<div class="final-score border-bg">
+				<div class="final-score-container" >
+					<div id="final-score-container" class="final-score border-bg">
 						<h2>Time's Up!</h2>
 						<div class="fruits-container">
 							<div class="center-fruits">
 								<div class="fruit-count">
 									<img src="images/Goodies/blueberry.png" class="score-img" alt="">
-								x <span id="blueberry-caught">45</span>=<span id="blueberry-calculated-score">500 points</span>
+								x <span class="display-fruit" id="blueberry">0</span>=<span id="blueberry-calculated-score">500 points</span>
 								</div>
 								
 							</div>
 							<div class="center-fruits">
 								<div class="fruit-count">
 									<img src="images/Goodies/cherry.png" class="score-img" alt="">
-								x <span id="cherry-caught">45</span>=<span id="cherry-calculated-score">500 points</span>
+								x <span class="display-fruit" id="cherry">0</span>=<span id="cherry-calculated-score">500 points</span>
 								</div>
 								
 							</div>
 							<div class="center-fruits">
 								<div class="fruit-count">
 									<img src="images/Goodies/green-apple.png" class="score-img" alt="">
-								x <span id="green-apple-caught">45</span>=<span id="green-apple-calculated-score">500 points</span>
+								x <span class="display-fruit" id="green-apple">0</span>=<span id="green-apple-calculated-score">500 points</span>
 								</div>
 								
 							</div>
 							<div class="center-fruits">
 								<div class="fruit-count">
 									<img src="images/Goodies/rotten-blueberry.png" class="score-img" alt="">
-								x <span id="rotten-blueberry-caught">45</span>=<span id="rotten-blueberry-calculated-score">500 points</span>
+								x <span class="display-fruit" id="rotten-blueberry">0</span>=<span id="rotten-blueberry-calculated-score">500 points</span>
 								</div>
 								
 							</div>
 							<div class="center-fruits">
 								<div class="fruit-count">
 									<img src="images/Goodies/rotten-cherry.png" class="score-img" alt="">
-								x <span id="rotten-cherry-caught">45</span>=<span id="rotten-cherry-calculated-score">500 points</span>
+								x <span class="display-fruit" id="rotten-cherry">0</span>=<span id="rotten-cherry-calculated-score">500 points</span>
 								</div>
 								
 							</div>
 							<div class="center-fruits">
 								<div class="fruit-count">
 									<img src="images/Goodies/rotten-green-apple.png" class="score-img" alt="">
-								x <span id="rotten-green-apple-caught">45</span>=<span id="rotten-green-apple-calculated-score">500 points</span>
+								x <span class="display-fruit" id="rotten-green-apple">0</span>=<span id="rotten-green-apple-calculated-score">500 points</span>
 								</div>
 								
 							</div>
 							<h2>Final Score: <span id="final-score">5000</span></h2>
 							<div class="center-fruits">
-								<button type="button">RESTART</button>
+								<button type="button" id="restart">RESTART</button>
 							</div>
 							
 						</div>

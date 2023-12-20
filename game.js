@@ -87,38 +87,83 @@ rottenGreenAppleImage.onload = function () {
     rottenGreenAppleReady = true; 
 };
 
-  // Function to start the countdown
-  function startTimer(duration, display) {
-    let timer = duration, minutes, seconds;
-    const intervalId = setInterval(function () {
-      minutes = parseInt(timer / 60, 10);
-      seconds = parseInt(timer % 60, 10);
+// Function to start the countdown
+function startTimer(duration, display) {
+let timer = duration, minutes, seconds;
+const intervalId = setInterval(function () {
+    minutes = parseInt(timer / 60, 10);
+    seconds = parseInt(timer % 60, 10);
 
-      minutes = minutes < 10 ? "0" + minutes : minutes;
-      seconds = seconds < 10 ? "0" + seconds : seconds;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    seconds = seconds < 10 ? "0" + seconds : seconds;
 
-      display.textContent = minutes + ":" + seconds;
+    display.textContent = minutes + ":" + seconds;
 
-      if (--timer < 0) {
-        clearInterval(intervalId); // Clear the interval when timer reaches 0
-        timer = duration;
-        displayWin();
+    if (--timer < 0) {
+    clearInterval(intervalId); // Clear the interval when timer reaches 0
+    timer = duration;
+    displayWin();
+    }
+}, 1000);
+}
+
+// Set the duration of the countdown in seconds
+const countdownDuration = 20;
+
+// Get the element where the timer will be displayed
+const display = document.getElementById('timer');
+
+// Start the countdown
+startTimer(countdownDuration, display);
+
+function countFruits(fruitsArray) {
+    // Define the list of all possible fruits
+    const allFruits = ["cherry", "blueberry", "green-apple", "rotten-cherry", "rotten-blueberry", "rotten-green-apple"];
+  
+    // Initialize an object with all fruits and initial count set to 0
+    const fruitCount = {};
+    allFruits.forEach(fruit => {
+      fruitCount[fruit] = 0;
+    });
+  
+    // Loop through the array and update counts
+    for (const fruit of fruitsArray) {
+      // If the fruit is in the list, update its count accordingly
+      if (fruitCount.hasOwnProperty(fruit)) {
+        // Check if it's a rotten fruit
+        if (fruit.startsWith("rotten-")) {
+          fruitCount[fruit]--;
+        } else {
+          fruitCount[fruit]++;
+        }
       }
-    }, 1000);
+      // Otherwise, it's not in the list and can be ignored
+    }
+  
+    // Return the object with fruit counts
+    return fruitCount;
   }
 
-  // Set the duration of the countdown in seconds
-  const countdownDuration = 10;
 
-  // Get the element where the timer will be displayed
-  const display = document.getElementById('timer');
+function displayWin() {
+    let countedFruits = countFruits(totalFruitsCaught);
+    let fruitsHtmlList = document.querySelectorAll('.display-fruit');
+    let totalScore = 0;
+    console.log(fruitsHtmlList);
+    for (let fruit of fruitsHtmlList){
+        fruit.innerHTML = countedFruits[fruit.id];
+        let calculatedScore = countedFruits[fruit.id] * 15;
+        totalScore += calculatedScore;
+        document.getElementById(`${fruit.id}-calculated-score`).innerHTML = calculatedScore;
+    }
+    document.getElementById('final-score').innerHTML = totalScore;
 
-  // Start the countdown
-  startTimer(countdownDuration, display);
-
-  function displayWin() {
-    console.log(totalFruitsCaught);
-  }
+    let scoreBox = document.getElementById('final-score-container');
+    scoreBox.style.display = 'block';
+    document.getElementById('restart').addEventListener('click', function(){
+        location.reload()
+    });
+}
 // Create global game objects 
 var player = {
     speed: 7, // movement in pixels per tick 
