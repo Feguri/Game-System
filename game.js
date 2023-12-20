@@ -35,6 +35,29 @@ playerImage.onload = function () {
     playerReady = true; 
 };
 
+// invisible image
+var invisibleReady = false;
+var invisibleImage = new Image(); 
+invisibleImage.src = "images/invisible.png"; 
+invisibleImage.onload = function () {
+    invisibleReady = true; 
+};
+
+// pine baddie image
+var pineReady = false;
+var pineImage = new Image(); 
+pineImage.src = "images/baddies/pineTree.png"; 
+pineImage.onload = function () {
+    pineReady = true; 
+};
+// apple tree baddie image
+var appleReady = false;
+var appleImage = new Image(); 
+appleImage.src = "images/baddies/appleTree.png"; 
+appleImage.onload = function () {
+    appleReady = true; 
+};
+
 // fruit basket
 var basketReady = false;
 var basketImage = new Image(); 
@@ -108,7 +131,9 @@ const intervalId = setInterval(function () {
 }
 
 // Set the duration of the countdown in seconds
-const countdownDuration = 20;
+const countdownDuration = 100;
+
+let livesLeft = 3;
 
 // Get the element where the timer will be displayed
 const display = document.getElementById('timer');
@@ -175,6 +200,18 @@ var basket = {
     width: 100,
     height: 100,
     type: 'basket',
+}
+
+var pineTree = {
+    width: 200,
+    height: 200,
+    type: 'tree',
+}
+
+var appleTree = {
+    width: 200,
+    height: 200,
+    type: 'tree',
 }
 
 let numOfFruits = 10;
@@ -311,6 +348,19 @@ const anim = function () {
 	gFrames++;
 };
 
+function randomNum(min, max, excludeMin, excludeMax) {
+    let randomNumber;
+  
+    do {
+      randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+    } while (randomNumber >= excludeMin && randomNumber <= excludeMax);
+  
+    return randomNumber;
+  }
+  
+  // Example: Generate a random number between 0 and 1000, excluding the range 450 to 550
+  const result = randomNum(0, 1000, 450, 550);
+  console.log(result);
 
 //Set initial state
 var init = function () {
@@ -323,6 +373,14 @@ var init = function () {
         goodies[i].x = (Math.random() * (canvas.width - goodies[i].width  ));
         goodies[i].y = (Math.random() * (canvas.height - goodies[i].height));
     }
+    // place baddies at random locations
+    pineTree.x = randomNum(0, canvas.width, ((canvas.width/2)-250), ((canvas.width/2)+250));
+    pineTree.y = (Math.random() * (canvas.width - pineTree.height));
+
+    
+    // Using the randomeNum function makes sure that the trees don't spawn in line with the player or the basket 
+    appleTree.x = randomNum(0, canvas.width, ((canvas.width/2)-250), ((canvas.width/2)+250));
+    appleTree.y = (Math.random() * (canvas.width - appleTree.height));
 
     // Place the basket object at the top center, right below the 'deliver' sign
     basket.x = canvas.width/2-basketDimension/2;
@@ -365,6 +423,12 @@ var main = function () {
             } else if (checkCollision(player, basket)){
 
             }
+            else if (checkCollision(player, pineTree)) {
+
+            }
+            else if (checkCollision(player, appleTree)) {
+
+            }
         }
         // respawn fruit
         while (goodies.length < numOfFruits) {
@@ -394,13 +458,17 @@ var render = function () {
     }
     if (playerReady) {
 			//ANIM Paint current frame of goodie, see anim() function below for managing the loop across spritesheet
-            if(currKey == 'down'){
-                ctx.drawImage(playerImage, gFrames*player.width, row, 100, 100, player.x, player.y, 100, 100);
+            if (playerVisible){
+                if(currKey == 'down'){
+                    ctx.drawImage(playerImage, gFrames*player.width, row, 100, 100, player.x, player.y, 100, 100);
+                } else {
+    
+                    ctx.drawImage(playerImage, 0*player.width, row, 100, 100, player.x, player.y, 100, 100);
+                }
             } else {
-
-                ctx.drawImage(playerImage, 0*player.width, row, 100, 100, player.x, player.y, 100, 100);
-                
+                ctx.drawImage(invisibleImage, gFrames*player.width, row, 100, 100, player.x, player.y, 100, 100);
             }
+
 			
 	}
     // ctx.drawImage(playerImage, 0, row, 50, 50, player.x, player.y, 100, 100);
@@ -423,13 +491,15 @@ var render = function () {
             } else if (goodies[i].type == 'rotten-green-apple') {
                 ctx.drawImage(rottenGreenAppleImage, goodies[i].x, goodies[i].y);
             }
-            
         }
-        
     }
     if (basketReady) {
         // puts the basket in the top center
         ctx.drawImage(basketImage, canvas.width/2-basketDimension/2, 0, basketDimension, basketDimension);
+    }
+    if (pineReady && appleReady) {
+        ctx.drawImage(pineImage, pineTree.x, pineTree.y);
+        ctx.drawImage(appleImage, appleTree.x, appleTree.y);
     }
 
     //Label
@@ -437,10 +507,47 @@ var render = function () {
 
     ctx.font = "50px serif";
     // ctx.filltext here
+    // ctx.fillText(pineTree.y, 50, 50);
     // dataBox.innerHTML = fruitCaught;
 };
 
-  
+let gracePeriod = false;
+let playerVisible = true;
+
+function hitCharacter() {
+  if (!gracePeriod) {
+    // Character is hit, perform hit logic
+    player.speed -= 3;
+    livesLeft--;
+    document.querySelectorAll('.heart')[0].remove();
+    document.getElementById('expression').src = 'images/luckyExpressions/sadLucky.png';
+    document.getElementById('expression-container').style.backgroundColor = '#40425A';
+    // Set grace period to true
+    gracePeriod = true;
+
+    // Set the duration of the grace period (in milliseconds)
+    const gracePeriodDuration = 2000; // 2000 milliseconds (adjust as needed)
+    
+    // Set the interval to toggle visibility every half second
+    const intervalId = setInterval(() => {
+
+      // Toggle visibility
+      playerVisible = (playerVisible === false) ? true : false;
+      console.log(playerVisible);
+    }, 50); // 500 milliseconds (half second)
+
+    // Use setTimeout to reset the grace period and clear the interval
+    setTimeout(() => {
+      gracePeriod = false;
+      clearInterval(intervalId); // Clear the interval to stop toggling visibility
+      // Grace period is over, you can perform additional logic here if needed
+      playerVisible = true;
+      document.getElementById('expression').src = 'images/luckyExpressions/normalLucky.png';
+      document.getElementById('expression-container').style.backgroundColor = '#BEE6F6';
+    }, gracePeriodDuration);
+  }
+}
+
 let inventorySize = 5;
 //Generic function to check for collisions 
 var checkCollision = function (obj1,obj2) {
@@ -451,6 +558,8 @@ var checkCollision = function (obj1,obj2) {
         ) {
             if (obj2.type == 'carrot'){
                 player.speed += 3;
+                document.getElementById('expression').src = 'images/luckyExpressions/powerLucky.png';
+                document.getElementById('expression-container').style.backgroundColor = '#FEE85F';
             } else if (obj2.type == 'basket'){
                 if(inventory.length == inventorySize){
                     delivery.classList.remove('animation');
@@ -466,13 +575,26 @@ var checkCollision = function (obj1,obj2) {
                     for (var i in goodies) {
                         goodies[i].x = (Math.random() * (canvas.width - goodies[i].width  ));
                         goodies[i].y = (Math.random() * (canvas.height - goodies[i].height));
+                    
                     }
+                    // place baddies at random locations
+                    pineTree.x = randomNum(0, canvas.width, ((canvas.width/2)-250), ((canvas.width/2)+250));
+                    pineTree.y = (Math.random() * (canvas.width - pineTree.height));
+
+                    
+                    // Using the randomeNum function makes sure that the trees don't spawn in line with the player or the basket 
+                    appleTree.x = randomNum(0, canvas.width, ((canvas.width/2)-250), ((canvas.width/2)+250));
+                    appleTree.y = (Math.random() * (canvas.width - appleTree.height));
+
                     totalFruitsCaught = totalFruitsCaught.concat(inventory);
                     inventory = [];
                     
                 }
                
-            } else {
+            } else if(obj2.type == 'tree'){
+                hitCharacter();
+            }
+             else {
                 // if you have a full inventory, it will not count as a collision
                 if (inventory.length == inventorySize){
                     return false;
