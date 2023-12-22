@@ -10,6 +10,13 @@ let delivery = document.getElementById('delivery');
 let inventoryBox = document.getElementById('inventory');
 let inventory = [];
 
+window.onload = function() {
+    //  alert(navigator.userAgent);
+      if (navigator.userAgent.indexOf("Firefox") > 0) {
+          alert("You're using Firefox, click anywhere on the screen before moving your character to enable audio!");
+      }
+  }
+
 let playerLost = false;
 
 document.onclick= function(event) {
