@@ -157,7 +157,6 @@
 			.health-inventory-container {
 				display: flex;
 				align-items: center;
-				background-color:#5023114a;
 				width: 20vw;
 				gap: 8px;
 			}
@@ -215,6 +214,7 @@
 			</div>
 			
 			<div id="gameBox">
+				<button id="start">GO</button>
 				<div class="final-score-container" >
 					<div id="final-score-container" class="final-score border-bg">
 						<h2>Time's Up!</h2>
@@ -275,6 +275,27 @@
 
 		<script src="app/getScore.js"></script>
 		<script src="app/setScore.js"></script>
+		<audio id="basket-delivery">
+			<source src="sounds/basket.mp3" type="audio/mp3">
+		</audio>
+		<audio id="background-music">
+			<source src="sounds/bg-music.mp3" type="audio/mp3">
+		</audio>
+		<audio id="carrot-win">
+			<source src="sounds/carrot.mp3" type="audio/mp3">
+		</audio>
+		<audio id="fruit-collect">
+			<source src="sounds/fruit-collect.mp3" type="audio/mp3">
+		</audio>
+		<audio id="game-over">
+			<source src="sounds/game-over.mp3" type="audio/mp3">
+		</audio>
+		<audio id="hit">
+			<source src="sounds/mixkit-losing-bleeps-2026.wav" type="audio">
+		</audio>
+		<audio id="walk">
+			<source src="sounds/walk.mp3" type="audio/mp3">
+		</audio>
 
 	</body>
 </html>

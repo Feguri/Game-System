@@ -12,6 +12,11 @@ let inventory = [];
 
 let playerLost = false;
 
+document.onclick= function(event) {
+    console.log('clicked!');
+    console.log(bgAudioPlaying);
+};
+
 //Load sprites
 // Background image
 var bgReady = false;
@@ -111,6 +116,59 @@ rottenGreenAppleImage.src = "images/Goodies/rotten-green-apple.png";
 rottenGreenAppleImage.onload = function () {
     rottenGreenAppleReady = true; 
 };
+
+// SOUNDS SYSTEM
+//Prepare sound clips
+var basketAudioReady = false;
+var basketAudio = document.getElementById("basket-delivery");
+basketAudio.oncanplay = function () {
+    basketAudioReady = true;
+}
+
+var backgroundAudioReady = false;
+var backgroundAudio = document.getElementById("background-music");
+ backgroundAudio.oncanplay = function () {
+   backgroundAudioReady = true;
+   backgroundAudio.volume = 0.6;
+   backgroundAudio.loop = true;
+}
+ 
+var carrotAudioReady = false;
+var carrotAudio = document.getElementById("carrot-win");
+carrotAudio.oncanplay = function () {
+   carrotAudioReady = true;
+   carrotAudio.volume = 0.8;
+}
+
+var fruitCollectAudioReady = false;
+var fruitCollectAudio = document.getElementById("fruit-collect");
+fruitCollectAudio.oncanplay = function () {
+   fruitCollectAudioReady = true;
+   fruitCollectAudio.volume = 0.8;
+}
+
+var gameOverAudioReady = false;
+var gameOverAudio = document.getElementById("game-over");
+gameOverAudio.oncanplay = function () {
+   gameOverAudioReady = true;
+   gameOverAudio.volume = 0.8;
+}
+
+var hitAudioReady = false;
+var hitAudio = document.getElementById("hit");
+hitAudio.oncanplay = function () {
+   hitAudioReady = true;
+}
+
+var walkAudioReady = false;
+var walkAudio = document.getElementById("walk");
+walkAudio.oncanplay = function () {
+   walkAudioReady = true;
+   walkAudio.volume = 0.8;
+   walkAudio.loop = true;
+}
+var bgPlaying = false;
+
 
 // Function to start the countdown
 function startTimer(duration, display) {
@@ -266,8 +324,16 @@ var velocity = {
     y: 0
 };
 
+let bgAudioPlaying = false;
 // Handle keyboard controls
 addEventListener("keydown", function (e) {
+    if (!bgAudioPlaying){
+        if (backgroundAudioReady){
+            backgroundAudio.play();
+            bgAudioPlaying = true;
+        }
+    }
+
     //Keystrokes
     currKey = 'down';
 
@@ -390,58 +456,64 @@ var init = function () {
 
 };
 
+let clickedStart = false;
+
+
 // The main game loop
 var main = function () {
-    if (checkWin()) {
-        //WIN display win frame
-        if (winReady) {
-            ctx.drawImage(winImage, (canvas.width - winImage.width)/2, 
-                (canvas.height - winImage.height)/2);
+
+        if (checkWin()) {
+            //WIN display win frame
+            if (winReady) {
+                ctx.drawImage(winImage, (canvas.width - winImage.width)/2, 
+                    (canvas.height - winImage.height)/2);
+            }
         }
-    }
+        
+        else {
+            //Not yet won, play game
+            //move player
+            if (player.x > 0 && player.x < canvas.width - player.width) {
+                player.x += vX;
+            }
+            else {
+                player.x -= vX;
+                vX = -vX; //bounce
+            }
+            if (player.y > 0 && player.y < canvas.height - player.height) {
+                player.y += vY
+            }
+            else {
+                player.y -= vY;
+                vY = -vY; //bounce
+            }
+            //check collisions
+            for (var i in goodies) {
+                if (checkCollision(player,goodies[i])) {
+                    goodies.splice(i,1);
+                    score++;
+                } else if (checkCollision(player, basket)){
     
-    else {
-        //Not yet won, play game
-        //move player
-        if (player.x > 0 && player.x < canvas.width - player.width) {
-            player.x += vX;
-        }
-        else {
-            player.x -= vX;
-            vX = -vX; //bounce
-        }
-        if (player.y > 0 && player.y < canvas.height - player.height) {
-            player.y += vY
-        }
-        else {
-            player.y -= vY;
-            vY = -vY; //bounce
-        }
-        //check collisions
-        for (var i in goodies) {
-            if (checkCollision(player,goodies[i])) {
-                goodies.splice(i,1);
-                score++;
-            } else if (checkCollision(player, basket)){
+                }
+                else if (checkCollision(player, pineTree)) {
+    
+                }
+                else if (checkCollision(player, appleTree)) {
 
+                }
             }
-            else if (checkCollision(player, pineTree)) {
-
+            // respawn fruit
+            while (goodies.length < numOfFruits) {
+                goodies.push(randomFruitGenerator());
+                console.log(goodies);
             }
-            else if (checkCollision(player, appleTree)) {
+    
 
-            }
-        }
-        // respawn fruit
-        while (goodies.length < numOfFruits) {
-            goodies.push(randomFruitGenerator());
-            console.log(goodies);
-        }
-
-
-        render();
-        window.requestAnimationFrame(main);
+            render();
+            window.requestAnimationFrame(main);
+        
     }
+
 };
 
 
@@ -519,6 +591,10 @@ let playerVisible = true;
 function hitCharacter() {
   if (!gracePeriod) {
     // Character is hit, perform hit logic
+    if (hitAudio){
+        hitAudio.play();
+        console.log('hit audio');
+    }
     player.speed -= 2;
     livesLeft--;
     if (livesLeft === -1){
@@ -539,7 +615,6 @@ function hitCharacter() {
 
       // Toggle visibility
       playerVisible = (playerVisible === false) ? true : false;
-      console.log(playerVisible);
     }, 50); // 500 milliseconds (half second)
 
     // Use setTimeout to reset the grace period and clear the interval
@@ -566,8 +641,15 @@ var checkCollision = function (obj1,obj2) {
                 player.speed += 3;
                 document.getElementById('expression').src = 'images/luckyExpressions/powerLucky.png';
                 document.getElementById('expression-container').style.backgroundColor = '#FEE85F';
+
+                if (carrotAudioReady){
+                    carrotAudio.play();
+                }
             } else if (obj2.type == 'basket'){
                 if(inventory.length == inventorySize){
+                    if (basketAudioReady){
+                        basketAudio.play();
+                    }
                     delivery.classList.remove('animation');
                     delivery.classList.add('transparent');
                     
@@ -604,6 +686,9 @@ var checkCollision = function (obj1,obj2) {
                 // if you have a full inventory, it will not count as a collision
                 if (inventory.length == inventorySize){
                     return false;
+                }
+                if (fruitCollectAudioReady){
+                    fruitCollectAudio.play();
                 }
                 if (inventory.length == inventorySize-1){
                     delivery.classList.add('animation');
