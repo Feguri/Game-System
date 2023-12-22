@@ -207,7 +207,7 @@ const intervalId = setInterval(function () {
 // Set the duration of the countdown in seconds
 const countdownDuration = 100;
 
-let livesLeft = 1;
+let livesLeft = 3;
 
 // Get the element where the timer will be displayed
 const display = document.getElementById('timer');
@@ -216,7 +216,7 @@ const display = document.getElementById('timer');
 startTimer(countdownDuration, display);
 
 function countFruits(fruitsArray) {
-    // Define the list of all possible fruits
+    // Define the list of    all possible fruits
     const allFruits = ["cherry", "blueberry", "green-apple", "rotten-cherry", "rotten-blueberry", "rotten-green-apple"];
   
     // Initialize an object with all fruits and initial count set to 0
