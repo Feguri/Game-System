@@ -129,7 +129,7 @@ var backgroundAudioReady = false;
 var backgroundAudio = document.getElementById("background-music");
  backgroundAudio.oncanplay = function () {
    backgroundAudioReady = true;
-   backgroundAudio.volume = 0;
+   backgroundAudio.volume = 0.35;
    backgroundAudio.loop = true;
 }
  
