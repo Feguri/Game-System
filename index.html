@@ -5,6 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Lucky the Rabbit</title>
 		<script src="game.js" defer></script>
+		<link rel="stylesheet" href="game-over.css">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Erica+One&family=Preahvihear&display=swap" rel="stylesheet"> 
@@ -170,132 +171,142 @@
 				width: 100%;
 				height: 100%;
 			}
+
+			/* game over */
+
 		</style>
 	</head>
-	<body>
-		
-		<nav>
-			<div id="uArrow" class="arrow"></div>
-			<div id="dArrow" class="arrow"></div>
-			<div id="lArrow" class="arrow"></div>
-			<div id="rArrow" class="arrow"></div>
-		</nav>
-		
-		<div class="center">
-			<div class="ui">
-				<div class="padding ui border-bg center-ui">
-					<div class="health-inventory-container">
-
-							<div class="expression-container" id="expression-container">
-								<img id="expression" src="images/luckyExpressions/normalLucky.png" alt="">
-							</div>
-							<div class="health-and-inventory-container">
-								<div class="health">
-
-									<img src="images/luckyMiniface.png" alt="" class="inventory-img-big">
-									<img src="images/luckyHeart.png" class="inventory-img heart" alt="heart">
-									<img src="images/luckyHeart.png" class="inventory-img heart" alt="heart">
-									<img src="images/luckyHeart.png" class="inventory-img heart" alt="heart">
-								</div>
-								<div class="inventory" id="inventory">
-										
-								</div>
-							</div>
-						</div>
-					
-					<div id="delivery" class="transparent deliver"></div>
-					
-					<div class="container">
-						<p><span id="timer">60</span>s</p>	
-					</div>
-					
-				</div>
-
-			</div>
+	<body id="bod">
+		<div id="ncaps">
+			<nav>
+				<div id="uArrow" class="arrow"></div>
+				<div id="dArrow" class="arrow"></div>
+				<div id="lArrow" class="arrow"></div>
+				<div id="rArrow" class="arrow"></div>
+			</nav>
 			
-			<div id="gameBox">
-				<button id="start">GO</button>
-				<div class="final-score-container" >
-					<div id="final-score-container" class="final-score border-bg">
-						<h2>Time's Up!</h2>
-						<div class="fruits-container">
-							<div class="center-fruits">
-								<div class="fruit-count">
-									<img src="images/Goodies/blueberry.png" class="score-img" alt="">
-								x <span class="display-fruit" id="blueberry">0</span>=<span id="blueberry-calculated-score">500 points</span>
+			<div class="center">
+				<div class="ui">
+					<div class="padding ui border-bg center-ui">
+						<div class="health-inventory-container">
+	
+								<div class="expression-container" id="expression-container">
+									<img id="expression" src="images/luckyExpressions/normalLucky.png" alt="">
+								</div>
+								<div class="health-and-inventory-container">
+									<div class="health">
+	
+										<img src="images/luckyMiniface.png" alt="" class="inventory-img-big">
+										<img src="images/luckyHeart.png" class="inventory-img heart" alt="heart">
+										<img src="images/luckyHeart.png" class="inventory-img heart" alt="heart">
+										<img src="images/luckyHeart.png" class="inventory-img heart" alt="heart">
+									</div>
+									<div class="inventory" id="inventory">
+											
+									</div>
+								</div>
+							</div>
+						
+						<div id="delivery" class="transparent deliver"></div>
+						
+						<div class="container">
+							<p><span id="timer">60</span>s</p>	
+						</div>
+						
+					</div>
+	
+				</div>
+				
+				<div id="gameBox">
+					<button id="start">GO</button>
+					<div class="final-score-container" >
+						<div id="final-score-container" class="final-score border-bg">
+							<h2>Time's Up!</h2>
+							<div class="fruits-container">
+								<div class="center-fruits">
+									<div class="fruit-count">
+										<img src="images/Goodies/blueberry.png" class="score-img" alt="">
+									x <span class="display-fruit" id="blueberry">0</span>=<span id="blueberry-calculated-score">500 points</span>
+									</div>
+									
+								</div>
+								<div class="center-fruits">
+									<div class="fruit-count">
+										<img src="images/Goodies/cherry.png" class="score-img" alt="">
+									x <span class="display-fruit" id="cherry">0</span>=<span id="cherry-calculated-score">500 points</span>
+									</div>
+									
+								</div>
+								<div class="center-fruits">
+									<div class="fruit-count">
+										<img src="images/Goodies/green-apple.png" class="score-img" alt="">
+									x <span class="display-fruit" id="green-apple">0</span>=<span id="green-apple-calculated-score">500 points</span>
+									</div>
+									
+								</div>
+								<div class="center-fruits">
+									<div class="fruit-count">
+										<img src="images/Goodies/rotten-blueberry.png" class="score-img" alt="">
+									x <span class="display-fruit" id="rotten-blueberry">0</span>=<span id="rotten-blueberry-calculated-score">500 points</span>
+									</div>
+									
+								</div>
+								<div class="center-fruits">
+									<div class="fruit-count">
+										<img src="images/Goodies/rotten-cherry.png" class="score-img" alt="">
+									x <span class="display-fruit" id="rotten-cherry">0</span>=<span id="rotten-cherry-calculated-score">500 points</span>
+									</div>
+									
+								</div>
+								<div class="center-fruits">
+									<div class="fruit-count">
+										<img src="images/Goodies/rotten-green-apple.png" class="score-img" alt="">
+									x <span class="display-fruit" id="rotten-green-apple">0</span>=<span id="rotten-green-apple-calculated-score">500 points</span>
+									</div>
+									
+								</div>
+								<h2>Final Score: <span id="final-score">5000</span></h2>
+								<div class="center-fruits">
+									<button type="button" id="restart">RESTART</button>
 								</div>
 								
 							</div>
-							<div class="center-fruits">
-								<div class="fruit-count">
-									<img src="images/Goodies/cherry.png" class="score-img" alt="">
-								x <span class="display-fruit" id="cherry">0</span>=<span id="cherry-calculated-score">500 points</span>
-								</div>
-								
-							</div>
-							<div class="center-fruits">
-								<div class="fruit-count">
-									<img src="images/Goodies/green-apple.png" class="score-img" alt="">
-								x <span class="display-fruit" id="green-apple">0</span>=<span id="green-apple-calculated-score">500 points</span>
-								</div>
-								
-							</div>
-							<div class="center-fruits">
-								<div class="fruit-count">
-									<img src="images/Goodies/rotten-blueberry.png" class="score-img" alt="">
-								x <span class="display-fruit" id="rotten-blueberry">0</span>=<span id="rotten-blueberry-calculated-score">500 points</span>
-								</div>
-								
-							</div>
-							<div class="center-fruits">
-								<div class="fruit-count">
-									<img src="images/Goodies/rotten-cherry.png" class="score-img" alt="">
-								x <span class="display-fruit" id="rotten-cherry">0</span>=<span id="rotten-cherry-calculated-score">500 points</span>
-								</div>
-								
-							</div>
-							<div class="center-fruits">
-								<div class="fruit-count">
-									<img src="images/Goodies/rotten-green-apple.png" class="score-img" alt="">
-								x <span class="display-fruit" id="rotten-green-apple">0</span>=<span id="rotten-green-apple-calculated-score">500 points</span>
-								</div>
-								
-							</div>
-							<h2>Final Score: <span id="final-score">5000</span></h2>
-							<div class="center-fruits">
-								<button type="button" id="restart">RESTART</button>
-							</div>
-							
 						</div>
 					</div>
-				</div>
-
-			</div>	
+	
+				</div>	
+			</div>
+	
+			<script src="app/getScore.js"></script>
+			<script src="app/setScore.js"></script>
+			<audio id="basket-delivery">
+				<source src="sounds/basket.mp3" type="audio/mp3">
+			</audio>
+			<audio id="background-music">
+				<source src="sounds/bg-music.mp3" type="audio/mp3">
+			</audio>
+			<audio id="carrot-win">
+				<source src="sounds/carrot.mp3" type="audio/mp3">
+			</audio>
+			<audio id="fruit-collect">
+				<source src="sounds/fruit-collect.mp3" type="audio/mp3">
+			</audio>
+			<audio id="game-over">
+				<source src="sounds/game-over.mp3" type="audio/mp3">
+			</audio>
+			<audio id="hit">
+				<source src="sounds/mixkit-losing-bleeps-2026.wav" type="audio">
+			</audio>
+			<audio id="hit2">
+				<source src="sounds/mixkit-losing-bleeps-2026.wav" type="audio">
+			</audio>
+			<audio id="walk">
+				<source src="sounds/walk.mp3" type="audio/mp3">
+			</audio>
+			<audio id="hit3">
+				<source src="sounds/hit.wav" type="audio/mp3">
+			</audio>
 		</div>
-
-		<script src="app/getScore.js"></script>
-		<script src="app/setScore.js"></script>
-		<audio id="basket-delivery">
-			<source src="sounds/basket.mp3" type="audio/mp3">
-		</audio>
-		<audio id="background-music">
-			<source src="sounds/bg-music.mp3" type="audio/mp3">
-		</audio>
-		<audio id="carrot-win">
-			<source src="sounds/carrot.mp3" type="audio/mp3">
-		</audio>
-		<audio id="fruit-collect">
-			<source src="sounds/fruit-collect.mp3" type="audio/mp3">
-		</audio>
-		<audio id="game-over">
-			<source src="sounds/game-over.mp3" type="audio/mp3">
-		</audio>
-		<audio id="hit">
-			<source src="sounds/mixkit-losing-bleeps-2026.wav" type="audio">
-		</audio>
-		<audio id="walk">
-			<source src="sounds/walk.mp3" type="audio/mp3">
-		</audio>
 
 	</body>
 </html>

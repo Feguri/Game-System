@@ -129,7 +129,7 @@ var backgroundAudioReady = false;
 var backgroundAudio = document.getElementById("background-music");
  backgroundAudio.oncanplay = function () {
    backgroundAudioReady = true;
-   backgroundAudio.volume = 0.6;
+   backgroundAudio.volume = 0;
    backgroundAudio.loop = true;
 }
  
@@ -145,6 +145,13 @@ var fruitCollectAudio = document.getElementById("fruit-collect");
 fruitCollectAudio.oncanplay = function () {
    fruitCollectAudioReady = true;
    fruitCollectAudio.volume = 0.8;
+}
+
+var hit3AudioReady = false;
+var hit3Audio = document.getElementById("hit3");
+hit3Audio.oncanplay = function () {
+   hit3AudioReady = true;
+   hit3Audio.volume = 0.8;
 }
 
 var gameOverAudioReady = false;
@@ -166,6 +173,13 @@ walkAudio.oncanplay = function () {
    walkAudioReady = true;
    walkAudio.volume = 0.8;
    walkAudio.loop = true;
+}
+
+var hit2AudioReady = false;
+var hit2Audio = document.getElementById("hit2");
+hit2Audio.oncanplay = function () {
+   hit2AudioReady = true;
+   hit2Audio.volume = 0.8;
 }
 var bgPlaying = false;
 
@@ -193,7 +207,7 @@ const intervalId = setInterval(function () {
 // Set the duration of the countdown in seconds
 const countdownDuration = 100;
 
-let livesLeft = 3;
+let livesLeft = 1;
 
 // Get the element where the timer will be displayed
 const display = document.getElementById('timer');
@@ -589,21 +603,39 @@ let gracePeriod = false;
 let playerVisible = true;
 
 function hitCharacter() {
+
   if (!gracePeriod) {
     // Character is hit, perform hit logic
-    if (hitAudio){
-        hitAudio.play();
+
+    if (hit3Audio){
+        try {
+            hit3.play();
+        } catch(err) {
+
+        }
+        
         console.log('hit audio');
     }
     player.speed -= 2;
     livesLeft--;
     if (livesLeft === -1){
+
         playerLost = true;
-        window.location.replace("game-over.html");
+        document.getElementById('ncaps').remove();
+        document.getElementById('bod').style.backgroundColor = 'black';
+        document.getElementById('bod').innerHTML = '<div class="center2"><img src="images/gameOver.png" id="animated" alt=""></div><div class="center2"><div class="btn-container"><a href="index.html"><button type="button" title="start button">RESTART</button></a></div></div>   <audio id="game-over">     <source src="sounds/game-over.mp3" type="audio/mp3">    </audio>';
+        var audio = new Audio('sounds/game-over.mp3');
+        audio.play();
     }
-    document.querySelectorAll('.heart')[0].remove();
-    document.getElementById('expression').src = 'images/luckyExpressions/sadLucky.png';
-    document.getElementById('expression-container').style.backgroundColor = '#40425A';
+    try {
+        document.querySelectorAll('.heart')[0].remove();
+        document.getElementById('expression').src = 'images/luckyExpressions/sadLucky.png';
+        document.getElementById('expression-container').style.backgroundColor = '#40425A';
+    } catch(err){
+
+    }
+    
+
     // Set grace period to true
     gracePeriod = true;
 
@@ -623,8 +655,13 @@ function hitCharacter() {
       clearInterval(intervalId); // Clear the interval to stop toggling visibility
       // Grace period is over, you can perform additional logic here if needed
       playerVisible = true;
-      document.getElementById('expression').src = 'images/luckyExpressions/normalLucky.png';
-      document.getElementById('expression-container').style.backgroundColor = '#BEE6F6';
+      try {
+        document.getElementById('expression').src = 'images/luckyExpressions/normalLucky.png';
+        document.getElementById('expression-container').style.backgroundColor = '#BEE6F6';
+      } catch(err) {
+
+      }
+
     }, gracePeriodDuration);
   }
 }
@@ -712,5 +749,11 @@ var checkWin = function () {
     }
 };
 
+
+
+  
 init();
 window.requestAnimationFrame(main);
+
+
+

@@ -1,0 +1,19 @@
+button {
+    font-family: 'Erica One', sans-serif;
+    background-color: transparent;
+    border: 1px solid white;
+    border-radius: 8px;
+    font-size: 50px;
+    color: white;
+    width: 100%;
+    margin-top: 100px;
+}
+button:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.076);
+}
+.center2 {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
