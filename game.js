@@ -285,12 +285,11 @@ var basket = {
 let species = ['pine', 'apple'];
 
 let trees = [
-    {width: 200,height: 200,type: 'tree',species: 'pine'},
-    {width: 200,height: 200,type: 'tree',species: 'apple'},
+
 ];
 
 
-let numOfFruits = 10;
+let numOfFruits = 8;
 
 let fruitsList = ['blueberry', 'carrot', 'cherry', 'green-apple', 'rotten-blueberry', 'rotten-cherry', 'rotten-green-apple'];
 function randomFruitGenerator() {
@@ -313,24 +312,31 @@ function randomFruitGenerator() {
     return { width: 50, height: 50, type: 'blueberry' };
 }
 function getRandomNumber(min, max) {
-    // Ensure that min and max are valid numbers
     if (typeof min !== 'number' || typeof max !== 'number') {
       throw new Error('Both arguments must be numbers');
     }
   
-    // Ensure that min is less than max
     if (min >= max) {
       throw new Error('Min must be less than max');
     }
   
     // Generate a random number between min (inclusive) and max (exclusive)
-    return Math.floor(Math.random() * (max - min) + min);
+    let randomnum = Math.floor(Math.random() * (max - min)) + min;
+    if (randomnum < 5){
+        return 0;
+    } else {
+        return 1;
+    }
+    
   }
   
 
 
 function randomTreeGenerator() {
-    return {width: 200,height: 200,type: 'tree',species: species[getRandomNumber(0,1)]};
+    let randomTree = species[getRandomNumber(1,10)];
+    console.log(randomTree);
+    return {width: 200,height: 200,type: 'tree',species: randomTree};
+    
 }
 var goodies = [ 
 
@@ -703,7 +709,7 @@ var checkCollision = function (obj1,obj2) {
         (obj1.y + obj1.height) > obj2.y
         ) {
             if (obj2.type == 'carrot'){
-                player.speed += 3;
+                player.speed += 1;
                 document.getElementById('expression').src = 'images/luckyExpressions/powerLucky.png';
                 document.getElementById('expression-container').style.backgroundColor = '#FEE85F';
 
@@ -711,7 +717,9 @@ var checkCollision = function (obj1,obj2) {
                     carrotAudio.play();
                 }
             } else if (obj2.type == 'basket'){
+                
                 if(inventory.length == inventorySize){
+                    numOfFruits++;
                     if (basketAudioReady){
                         basketAudio.play();
                     }
