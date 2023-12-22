@@ -4,8 +4,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instructions</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Erica+One&family=Preahvihear&display=swap" rel="stylesheet"> 
+    <style>
+
+			button {
+				background-color: #502311;
+				border-radius: 30px;
+				font-size: 30px;
+				font-family: 'Preahvihear', sans-serif;
+				color: white;
+				padding: 15px;
+				border: none;
+				border: 7px solid #F5D99E;
+			}
+			button:hover {
+				cursor: pointer;
+				background-color: #F5D99E;
+				color: #502311;
+				border: 7px solid #502311;
+			}
+            .button-container {
+                display: flex;
+                justify-content: space-between;
+                width: 80vw;
+                margin: 0 auto;
+            }
+            .lr-btn {
+                width: 100px;
+            }
+            .center-instructions {
+                width: 100vw;
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+            }
+            .c {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+            p {
+                font-family: 'Preahvihear', sans-serif;
+                margin-top: 50px;
+                padding: 18px;
+                background-color: #F5D99E;
+                width: 50%;
+                border: 7px solid #502311;
+            }
+    </style>
 </head>
 <body>
-    
+    <div class="center-instructions">
+        <div class="center">
+            <img src="images/instructions/lucky-dad.png" id="img" alt="lucky playing with his kids">
+        </div>
+
+            <div class="button-container">
+                <button class="lr-btn" id="left" type="button"><</button>
+                <button class="lr-btn" id="right" type="button">></button> 
+            </div>
+            <div class="c">
+                <p id="textBox">Lucky is a mighty rabbit, but he has three kids that need to be fed. You can control him with the Up, Down, Left and Right arrow keys.</p>   
+            </div>
+
+
+    </div>
+
+    <script>
+        let links = [
+            'images/instructions/lucky-dad.png',
+            'images/instructions/lucky-carrot.png',
+            'images/instructions/inventory.png',
+            'images/instructions/lucky-tree.png',
+            'images/instructions/deliver.png',
+            'images/instructions/time.png',
+            'images/instructions/luckyyy.png',
+        ]
+        let instructionsTexts = [
+            'Lucky is a mighty rabbit, but he has three kids that need to be fed. You can control him with the Up, Down, Left and Right arrow keys.',
+            'Collect fruits throughout the map for the kids, and carrots will give you a power up.',
+            'You have 3 lives to begin with, and your maximum carry capacity is 5 fruits.',
+            'Be weary of trees, if you bump into them, you will lose a life!',
+            'Once you have a full inventory, deliver them to the basket!',
+            'Keep an eye on the time left to collect as many fruits as possible!',
+            '<button id="game" type="button" onclick="game()">START</button> '
+        ]
+        let rightBtn = document.getElementById('right');
+        let leftBtn = document.getElementById('left');
+        let currIndex = 0;
+        let img = document.getElementById('img');
+        let textBox = document.getElementById('textBox');
+
+        rightBtn.addEventListener('click', function(){
+            currIndex++;
+            if(currIndex == links.length){
+                currIndex = 0;
+            }
+            img.src = links[currIndex];
+            textBox.innerHTML = instructionsTexts[currIndex];
+        });
+        leftBtn.addEventListener('click', function(){
+            currIndex--;
+            if(currIndex === -1){
+                currIndex = links.length-1;
+            }
+            img.src = links[currIndex];
+            textBox.innerHTML = instructionsTexts[currIndex];
+        });
+        function game() {
+            window.location.href = 'index.html';
+        }
+    </script>
 </body>
 </html>

@@ -282,18 +282,13 @@ var basket = {
     height: 100,
     type: 'basket',
 }
+let species = ['pine', 'apple'];
 
-var pineTree = {
-    width: 200,
-    height: 200,
-    type: 'tree',
-}
+let trees = [
+    {width: 200,height: 200,type: 'tree',species: 'pine'},
+    {width: 200,height: 200,type: 'tree',species: 'apple'},
+];
 
-var appleTree = {
-    width: 200,
-    height: 200,
-    type: 'tree',
-}
 
 let numOfFruits = 10;
 
@@ -316,6 +311,26 @@ function randomFruitGenerator() {
 
     // Default to blueberry if none of the probabilities match
     return { width: 50, height: 50, type: 'blueberry' };
+}
+function getRandomNumber(min, max) {
+    // Ensure that min and max are valid numbers
+    if (typeof min !== 'number' || typeof max !== 'number') {
+      throw new Error('Both arguments must be numbers');
+    }
+  
+    // Ensure that min is less than max
+    if (min >= max) {
+      throw new Error('Min must be less than max');
+    }
+  
+    // Generate a random number between min (inclusive) and max (exclusive)
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+  
+
+
+function randomTreeGenerator() {
+    return {width: 200,height: 200,type: 'tree',species: species[getRandomNumber(0,1)]};
 }
 var goodies = [ 
 
@@ -462,14 +477,13 @@ var init = function () {
         goodies[i].x = (Math.random() * (canvas.width - goodies[i].width  ));
         goodies[i].y = (Math.random() * (canvas.height - goodies[i].height));
     }
+    for (var i in trees){
+        trees[i].x = randomNum(0, canvas.width, ((canvas.width/2)-250), ((canvas.width/2)+250));
+        trees[i].y = (Math.random() * (canvas.width - trees[i].height));
+    }
     // place baddies at random locations
-    pineTree.x = randomNum(0, canvas.width, ((canvas.width/2)-250), ((canvas.width/2)+250));
-    pineTree.y = (Math.random() * (canvas.width - pineTree.height));
 
-    
-    // Using the randomeNum function makes sure that the trees don't spawn in line with the player or the basket 
-    appleTree.x = randomNum(0, canvas.width, ((canvas.width/2)-250), ((canvas.width/2)+250));
-    appleTree.y = (Math.random() * (canvas.width - appleTree.height));
+
 
     // Place the basket object at the top center, right below the 'deliver' sign
     basket.x = canvas.width/2-basketDimension/2;
@@ -494,20 +508,22 @@ var main = function () {
         else {
             //Not yet won, play game
             //move player
-            if (player.x > 0 && player.x < canvas.width - player.width) {
-                player.x += vX;
+
+        
+            player.x += vX;
+            if (player.x >= canvas.width){
+                player.x = 0;
+            } else if (player.x <= 0){
+                player.x = canvas.width;
             }
-            else {
-                player.x -= vX;
-                vX = -vX; //bounce
+            player.y += vY;
+            if (player.y >= canvas.height){
+                player.y = 0;
+            } else if (player.y <= 0){
+                player.y = canvas.height;
             }
-            if (player.y > 0 && player.y < canvas.height - player.height) {
-                player.y += vY
-            }
-            else {
-                player.y -= vY;
-                vY = -vY; //bounce
-            }
+
+
             //check collisions
             for (var i in goodies) {
                 if (checkCollision(player,goodies[i])) {
@@ -516,17 +532,16 @@ var main = function () {
                 } else if (checkCollision(player, basket)){
     
                 }
-                else if (checkCollision(player, pineTree)) {
-    
+                for (let tree of trees){
+                    checkCollision(player, tree);
                 }
-                else if (checkCollision(player, appleTree)) {
 
-                }
+
             }
             // respawn fruit
             while (goodies.length < numOfFruits) {
                 goodies.push(randomFruitGenerator());
-                console.log(goodies);
+                
             }
     
 
@@ -593,8 +608,16 @@ var render = function () {
         ctx.drawImage(basketImage, canvas.width/2-basketDimension/2, 0, basketDimension, basketDimension);
     }
     if (pineReady && appleReady) {
-        ctx.drawImage(pineImage, pineTree.x, pineTree.y);
-        ctx.drawImage(appleImage, appleTree.x, appleTree.y);
+        for (let tree of trees){
+            
+            if (tree.species == 'pine'){
+                ctx.drawImage(pineImage, tree.x, tree.y);
+            } else if (tree.species == 'apple'){
+                ctx.drawImage(appleImage, tree.x, tree.y);
+            }
+
+        }
+
     }
 
     //Label
@@ -620,8 +643,6 @@ function hitCharacter() {
         } catch(err) {
 
         }
-        
-        console.log('hit audio');
     }
     player.speed -= 2;
     livesLeft--;
@@ -707,16 +728,14 @@ var checkCollision = function (obj1,obj2) {
                     for (var i in goodies) {
                         goodies[i].x = (Math.random() * (canvas.width - goodies[i].width  ));
                         goodies[i].y = (Math.random() * (canvas.height - goodies[i].height));
-                    
                     }
                     // place baddies at random locations
-                    pineTree.x = randomNum(0, canvas.width, ((canvas.width/2)-250), ((canvas.width/2)+250));
-                    pineTree.y = (Math.random() * (canvas.width - pineTree.height));
 
-                    
-                    // Using the randomeNum function makes sure that the trees don't spawn in line with the player or the basket 
-                    appleTree.x = randomNum(0, canvas.width, ((canvas.width/2)-250), ((canvas.width/2)+250));
-                    appleTree.y = (Math.random() * (canvas.width - appleTree.height));
+                    trees.push(randomTreeGenerator());
+                    for (var i in trees){
+                        trees[i].x = randomNum(0, canvas.width, ((canvas.width/2)-250), ((canvas.width/2)+250));
+                        trees[i].y = (Math.random() * (canvas.width - trees[i].height));
+                    }
 
                     totalFruitsCaught = totalFruitsCaught.concat(inventory);
                     inventory = [];
